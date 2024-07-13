@@ -4,24 +4,39 @@ const BASE_URL = "http://localhost:3000";
 
 const base_api = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true,
+  // withCredentials: true,
 });
 
-export function get_default(url: string) {
+async function waitForSeconds(seconds = 2) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, seconds * 1000);
+  });
+}
+
+export async function get_default(url: string) {
+  // await waitForSeconds();
   return base_api.get(url);
 }
-export function delete_default(url: string) {
+export async function delete_default(url: string) {
+  await waitForSeconds();
+
   return base_api.delete(url);
 }
 export async function post_default(
   url: string,
   { arg: data }: { arg: unknown }
 ) {
-  await new Promise((resolve) => {
-    setTimeout(() => resolve(true), 3000);
-  });
+  await waitForSeconds();
+
   return base_api.post(url, data);
 }
-export function put_default(url: string, { arg: data }: { arg: unknown }) {
+export async function put_default(
+  url: string,
+  { arg: data }: { arg: unknown }
+) {
+  await waitForSeconds();
+
   return base_api.put(url, data);
 }

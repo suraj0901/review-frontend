@@ -4,10 +4,11 @@ import { AuthProvider } from "./components/auth-provider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ThemeProvider } from "./components/theme-provider";
 import { TooltipProvider } from "./components/ui/tooltip";
-import Home from "./pages/admin/index";
+import Employee from "./pages/admin/employee";
+import AdminLayout from "./pages/admin/layout";
+import Performance from "./pages/admin/performance";
 import Login from "./pages/login";
 import Register from "./pages/register";
-import AdminLayout from "./pages/admin/layout";
 
 const router = createBrowserRouter([
   {
@@ -28,14 +29,22 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Home />,
+            element: <Employee />,
+          },
+          {
+            path: "/admin/employee",
+            element: <Employee />,
+          },
+          {
+            path: "/admin/performance",
+            element: <Performance />,
           },
         ],
       },
-      {
-        path: "/user",
-        element: <Home />,
-      },
+      // {
+      //   path: "/user",
+      //   element: <Home />,
+      // },
     ],
   },
 ]);
