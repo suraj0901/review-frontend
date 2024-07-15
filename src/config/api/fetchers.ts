@@ -40,3 +40,8 @@ export async function put_default(
 
   return base_api.put(url, data);
 }
+export async function put_form(url: string, { arg: data }: { arg: unknown }) {
+  await waitForSeconds();
+
+  return base_api.putForm(url, data);
+}

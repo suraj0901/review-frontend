@@ -11,6 +11,19 @@ const columns = [
   {
     header: "Name",
     accessorKey: "name",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    cell: (prop: any) => {
+      return (
+        <div className="flex items-center gap-x-1">
+          <img
+            src={prop.row.original.profile_image}
+            alt="Profile Image"
+            className="rounded-full w-8 h-8"
+          />
+          <p className="capitalize">{prop.getValue()}</p>
+        </div>
+      );
+    },
   },
   {
     header: "Email",

@@ -54,7 +54,7 @@ export default function AdminLayout() {
       </header>
       <div className="flex flex-1">
         <SideNav />
-        <ScrollArea className="flex-1 p-4">
+        <ScrollArea className="p-4 flex-1 h-[calc(100svh-72px)]">
           <Outlet />
         </ScrollArea>
       </div>

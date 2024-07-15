@@ -7,12 +7,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { AxiosResponse } from "axios";
 import { Edit2 } from "lucide-react";
-import { UserDTO } from "./user-dto";
 import { useState } from "react";
 import { EditUserForm } from "./edit-user-form";
+import { UserDTO } from "./user-dto";
 import { setLoggedInUser } from "./user-store";
-import { AxiosResponse } from "axios";
 
 interface UserProfileProps {
   children: React.ReactNode;
@@ -21,13 +21,8 @@ interface UserProfileProps {
 
 export function UserProfile({ children, user }: UserProfileProps) {
   const [showEditForm, setShowEditForm] = useState(false);
-  function handleUpdateSuccess(data?: AxiosResponse) {
-    const user = data?.data as UserDTO & {
-      profile_image: { type: string; buffer: Buffer };
-    };
-    console.log({ user });
-    // user.profile_image = user.profile_image.buffer;
-    setLoggedInUser(user);
+  async function handleUpdateSuccess(data?: AxiosResponse) {
+    setLoggedInUser(data?.data);
     setShowEditForm(false);
   }
   return (
@@ -66,8 +61,14 @@ export function UserProfile({ children, user }: UserProfileProps) {
 }
 
 function Profile({ user }: { user: UserDTO }) {
+  console.log({ user });
+
   return (
     <>
+      <img
+        src={user.profile_image}
+        className="w-40 h-40 rounded-full mx-auto"
+      />
       <div>
         <p className="text-xs">Name</p>
         <p className="font-semibold text-base">{user?.name}</p>

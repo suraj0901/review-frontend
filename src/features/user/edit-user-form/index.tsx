@@ -17,11 +17,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosResponse } from "axios";
 import { FieldValues, useForm } from "react-hook-form";
 import { Gender } from "../gender";
-import { UserDTO } from "../user-dto";
 import { useEditUser } from "../use-case";
-import { AxiosResponse } from "axios";
+import { UserDTO } from "../user-dto";
 import edit_user_schema from "./edit-user-schema";
 import { file_to_base64_string } from "@/lib/utils";
 
@@ -34,7 +34,7 @@ export function EditUserForm({
 }) {
   const form = useForm({
     resolver: zodResolver(edit_user_schema),
-    defaultValues: user,
+    defaultValues: { ...user, profile_image: user.profile_image ?? "" },
   });
   const { updateUser, isMutating } = useEditUser(user.id, { onSuccess });
   function onSubmit(data: FieldValues) {
@@ -115,8 +115,8 @@ export function EditUserForm({
                   onChange={(e) => {
                     const image_file = e.currentTarget.files?.[0];
                     if (!image_file) return;
-                    file_to_base64_string(image_file).then((base64_string) => {
-                      form.setValue(field.name, base64_string as string);
+                    file_to_base64_string(image_file).then((base64) => {
+                      form.setValue(field.name, base64 as string);
                     });
                   }}
                   type="file"
@@ -131,10 +131,7 @@ export function EditUserForm({
           )}
         />
 
-        <Button
-          className="w-full"
-          disabled={isMutating || !form.formState.isDirty}
-        >
+        <Button className="w-full" disabled={isMutating}>
           Update User
         </Button>
       </form>
