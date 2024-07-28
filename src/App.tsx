@@ -9,6 +9,7 @@ import AdminLayout from "./pages/admin/layout";
 import Performance from "./pages/admin/performance";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import ReviewTemplate from "./pages/admin/review-template";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
           {
             path: "/admin/performance",
             element: <Performance />,
+          },
+          {
+            path: "/admin/review-template",
+            element: <ReviewTemplate />,
           },
         ],
       },

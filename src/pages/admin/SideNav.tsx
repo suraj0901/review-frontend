@@ -1,5 +1,5 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { BarChart4Icon, UserCircle2 } from "lucide-react";
+import { BarChart4Icon, LayoutTemplate, UserCircle2 } from "lucide-react";
 import { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -18,6 +18,15 @@ const navigations = [
       <p className="flex items-center gap-x-2">
         <BarChart4Icon />
         Performance
+      </p>
+    ),
+  },
+  {
+    value: "review-template",
+    label: (
+      <p className="flex items-center gap-x-2">
+        <LayoutTemplate />
+        Review Template
       </p>
     ),
   },

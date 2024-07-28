@@ -47,12 +47,12 @@ const columns = [
       return (
         <div className="flex items-center gap-x-2">
           <EditUser user={props?.row?.original}>
-            <Button variant="secondary">
+            <Button variant="secondary" size="sm">
               <Edit size={15} className="mr-2" /> Edit
             </Button>
           </EditUser>
           <DeleteUserDialog user_id={props?.row?.original?.id}>
-            <Button variant="destructive">
+            <Button variant="destructive" size="sm">
               <Trash2 size={15} className="mr-2" /> Delete
             </Button>
           </DeleteUserDialog>
