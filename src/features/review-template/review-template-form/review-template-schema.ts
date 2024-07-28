@@ -6,11 +6,14 @@ const reviewTemplateSchema = object({
   description: string({ message: requireMsg("Description") }),
   questions: object(
     {
-      id: number({ message: requireMsg("Id") }).optional(),
+      id: number({ message: requireMsg("Id") })
+        .optional()
+        .nullable(),
       title: string({ message: requireMsg("Question") }),
     },
-    { message: requireMsg("Question") }
+    { message: "Atleast one question is required" }
   ).array(),
+  delete_questions_id: number().array().optional(),
 });
 
 export default reviewTemplateSchema;

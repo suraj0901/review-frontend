@@ -1,19 +1,14 @@
 import LoadingAndErrorWrapper from "@/components/LoadingAndErrorWrapper";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
-import { CellContext } from "@tanstack/react-table";
+import useSearchFilter from "@/lib/useSearchFilter";
+import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Trash2 } from "lucide-react";
-import DeleteReviewTemplateDialog from "./delete-review-template-dialog";
 import { useReviewTemplateList } from "../use-case";
+import DeleteReviewTemplateDialog from "./delete-review-template-dialog";
 import { EditReviewTemplateButton } from "./edit-review-template-dialog";
 
-interface ColumnsType {
-  header: string;
-  accessorKey: string;
-  cell?: (props: CellContext<never, never>) => React.ReactNode;
-}
-
-const review_template_column: ColumnsType[] = [
+const review_template_column: ColumnDef<unknown, unknown>[] = [
   {
     header: "Title",
     accessorKey: "title",
@@ -31,7 +26,9 @@ const review_template_column: ColumnsType[] = [
         {/* <Button size="sm" onClick={() => props.getValue()}>
           <EyeIcon size={15} className="mr-1" /> View
         </Button> */}
-        <EditReviewTemplateButton review_template_id={props.getValue()}>
+        <EditReviewTemplateButton
+          review_template_id={props.getValue() as number}
+        >
           <Button
             variant="secondary"
             size="sm"
@@ -40,7 +37,9 @@ const review_template_column: ColumnsType[] = [
             <Edit size={15} className="mr-1" /> Edit
           </Button>
         </EditReviewTemplateButton>
-        <DeleteReviewTemplateDialog review_template_id={props.getValue()}>
+        <DeleteReviewTemplateDialog
+          review_template_id={props.getValue() as number}
+        >
           <Button variant="destructive" size="sm">
             <Trash2 size={15} className="mr-1" /> Delete
           </Button>
@@ -50,11 +49,42 @@ const review_template_column: ColumnsType[] = [
   },
 ];
 
+const INITIAL_VALUES = {
+  page: "1",
+  limit: "2",
+};
+
 export function ReviewTemplateTable() {
-  const { review_template, isLoading, error } = useReviewTemplateList();
+  const { filter, updateFilter } = useSearchFilter(INITIAL_VALUES);
+  const { review_template, total, isLoading, error } =
+    useReviewTemplateList(filter);
+
   return (
     <LoadingAndErrorWrapper error={error} isLoading={isLoading}>
-      <DataTable columns={review_template_column} data={review_template} />
+      <DataTable
+        columns={review_template_column}
+        data={review_template}
+        rowCount={total}
+        initialState={{
+          pagination: {
+            pageIndex: +filter.page - 1,
+            pageSize: +filter.limit,
+          },
+        }}
+        manualPagination={true}
+        onPaginationChange={(table) => {
+          const { pageIndex, pageSize } = table({
+            pageIndex: +filter.page,
+            pageSize: +filter.limit,
+          });
+          updateFilter({
+            page: pageIndex + "",
+            limit: pageSize + "",
+          });
+        }}
+
+        // on={(page) => updateFilter({ page: page + "" })}
+      />
     </LoadingAndErrorWrapper>
   );
 }

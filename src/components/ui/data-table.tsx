@@ -1,11 +1,11 @@
 "use client";
 
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
-  useReactTable,
   getPaginationRowModel,
+  TableOptions,
+  useReactTable,
 } from "@tanstack/react-table";
 
 import {
@@ -18,18 +18,11 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
-
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+export function DataTable<TData>(
+  props: Omit<TableOptions<TData>, "getCoreRowModel">
+) {
   const table = useReactTable({
-    data,
-    columns,
+    ...props,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
@@ -71,14 +64,17 @@ export function DataTable<TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell
+                colSpan={props.columns.length}
+                className="h-24 text-center"
+              >
                 No results.
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-      {data.length > 0 ? <DataTablePagination table={table} /> : null}
+      {props.data.length > 0 ? <DataTablePagination table={table} /> : null}
     </>
   );
 }

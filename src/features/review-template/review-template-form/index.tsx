@@ -41,7 +41,6 @@ export default function ReviewTemplateForm({
   }
 
   function handleSubmit(data: FieldValues) {
-    data.delete_questions_id = form.getValues("delete_questions_id");
     onSubmit(data);
   }
   return (
@@ -82,6 +81,9 @@ export default function ReviewTemplateForm({
             control={form.control}
             onRemove={handleDeleteQuestion}
           />
+          <p className="text-red-600/70 text-sm">
+            {form.formState?.errors?.questions?.message?.toString()}
+          </p>
         </div>
         <div className="grid grid-cols-2 gap-2 mt-4">
           <Button disabled={isMutating} variant="secondary" type="reset">

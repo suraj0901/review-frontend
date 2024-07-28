@@ -24,7 +24,7 @@ export default function QuestionForm(props: QuestionFormProps) {
   const { fields, append, remove } = useFieldArray(props);
 
   function handleAddQuestion() {
-    append({ title: null });
+    append({ title: null, id: null });
     ref.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -39,7 +39,7 @@ export default function QuestionForm(props: QuestionFormProps) {
     <Card key={field.id}>
       <CardHeader>
         <FormField
-          name={`${props.name}.${field.id}.id`}
+          name={`${props.name}.${index}.id`}
           control={props.control}
           render={({ field }) => (
             <FormItem>
@@ -62,7 +62,7 @@ export default function QuestionForm(props: QuestionFormProps) {
         />
         <FormField
           disabled={props.disabled ?? false}
-          name={`${props.name}.${field.id}.title`}
+          name={`${props.name}.${index}.title`}
           control={props.control}
           render={({ field }) => (
             <FormItem>
