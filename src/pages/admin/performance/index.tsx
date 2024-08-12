@@ -1,3 +1,11 @@
+import AddPerformance from "./AddPerformance";
+
 export default function Performance() {
-  return <div>Performance</div>;
+  return (
+    <div>
+      <div className="flex justify-end">
+        <AddPerformance />
+      </div>
+    </div>
+  );
 }

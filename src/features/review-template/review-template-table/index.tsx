@@ -1,6 +1,7 @@
 import LoadingAndErrorWrapper from "@/components/LoadingAndErrorWrapper";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import usePagination from "@/lib/usePagination";
 import useSearchFilter from "@/lib/useSearchFilter";
 import { ColumnDef } from "@tanstack/react-table";
 import { Edit, Trash2 } from "lucide-react";
@@ -51,39 +52,41 @@ const review_template_column: ColumnDef<unknown, unknown>[] = [
 
 const INITIAL_VALUES = {
   page: "1",
-  limit: "2",
+  limit: "10",
 };
 
-export function ReviewTemplateTable() {
+function useReviewTemplateFilter() {
   const { filter, updateFilter } = useSearchFilter(INITIAL_VALUES);
+  const reviewFilter = {
+    page: filter.page,
+    limit: filter.limit,
+  };
+  const { pagination, updatePagination } = usePagination(
+    reviewFilter,
+    updateFilter
+  );
+  return {
+    reviewFilter,
+    pagination,
+    updatePagination,
+  };
+}
+
+export function ReviewTemplateTable() {
+  const { reviewFilter, pagination, updatePagination } =
+    useReviewTemplateFilter();
   const { review_template, total, isLoading, error } =
-    useReviewTemplateList(filter);
+    useReviewTemplateList(reviewFilter);
 
   return (
     <LoadingAndErrorWrapper error={error} isLoading={isLoading}>
       <DataTable
         columns={review_template_column}
         data={review_template}
-        rowCount={total}
-        initialState={{
-          pagination: {
-            pageIndex: +filter.page - 1,
-            pageSize: +filter.limit,
-          },
-        }}
         manualPagination={true}
-        onPaginationChange={(table) => {
-          const { pageIndex, pageSize } = table({
-            pageIndex: +filter.page,
-            pageSize: +filter.limit,
-          });
-          updateFilter({
-            page: pageIndex + "",
-            limit: pageSize + "",
-          });
-        }}
-
-        // on={(page) => updateFilter({ page: page + "" })}
+        rowCount={total}
+        state={{ pagination }}
+        onPaginationChange={updatePagination}
       />
     </LoadingAndErrorWrapper>
   );
