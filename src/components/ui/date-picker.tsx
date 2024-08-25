@@ -4,15 +4,20 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { Button } from "./button";
 import { Calendar, CalendarProps } from "./calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { useState } from "react";
 
-export function DatePicker({ ...props }: CalendarProps) {
+export function DatePicker({
+  ...props
+}: CalendarProps & { onSelect: () => void }) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            "w-[280px] justify-start text-left font-normal",
+            "flex max-w-xs w-full justify-start text-left font-normal",
             !props.selected && "text-muted-foreground"
           )}
         >
@@ -25,7 +30,13 @@ export function DatePicker({ ...props }: CalendarProps) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
-        <Calendar {...props} />
+        <Calendar
+          {...props}
+          onSelect={(date) => {
+            setOpen(false);
+            props.onSelect(date);
+          }}
+        />
       </PopoverContent>
     </Popover>
   );

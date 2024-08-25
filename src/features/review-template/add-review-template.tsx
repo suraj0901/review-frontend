@@ -1,12 +1,7 @@
 import ReviewTemplateForm from "./review-template-form";
-import { useAddReviewTemplate } from "./use-case";
+import { AddReviewTemplateProps, useAddReviewTemplate } from "./use-case";
 
-interface AddReviewTemplateFormProps {
-  onSuccess: () => void;
-}
-export function AddReviewTemplateForm({
-  onSuccess,
-}: AddReviewTemplateFormProps) {
+export function AddReviewTemplateForm({ onSuccess }: AddReviewTemplateProps) {
   const { isMutating, submit } = useAddReviewTemplate({
     onSuccess,
   });

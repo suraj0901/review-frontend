@@ -16,7 +16,7 @@ import QuestionForm from "./question-form";
 import reviewTemplateSchema from "./review-template-schema";
 
 interface ReviewTemplateFormProps {
-  onSubmit: (data: FieldValues) => void;
+  onSubmit: (data: FieldValues) => Promise<void>;
   isMutating: boolean;
   defaultValues?: FieldValues;
 }
@@ -40,9 +40,14 @@ export default function ReviewTemplateForm({
     form.setValue("delete_questions_id", [...delete_questions_id, id]);
   }
 
-  function handleSubmit(data: FieldValues) {
-    onSubmit(data);
+  async function handleSubmit(data: FieldValues) {
+    console.log({ data });
+
+    await onSubmit(data);
   }
+
+  // console.log({ error: form.formState.errors });
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} onReset={onReset}>

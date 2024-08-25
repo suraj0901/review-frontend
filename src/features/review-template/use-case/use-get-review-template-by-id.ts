@@ -7,6 +7,7 @@ interface Question {
 }
 
 export interface ReviewTemplate {
+  id: number;
   title: string;
   description: string;
   questions: Question[];
@@ -23,6 +24,7 @@ export default function useGetReviewTemplateById(review_template_id: number) {
   const review_template_dto = data?.data;
 
   const review_template: ReviewTemplate = {
+    id: review_template_dto?.id,
     title: review_template_dto?.title,
     description: review_template_dto?.description,
     questions: review_template_dto?.Questions?.map((item: Question) => ({

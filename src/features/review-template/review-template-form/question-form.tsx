@@ -24,7 +24,7 @@ export default function QuestionForm(props: QuestionFormProps) {
   const { fields, append, remove } = useFieldArray(props);
 
   function handleAddQuestion() {
-    append({ title: null, id: null });
+    append({ title: null });
     ref.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
