@@ -7,12 +7,24 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { SearchSelect } from "@/components/Wrapper/FormItem";
+import { DefaultFooter } from "@/components/Wrapper/DefaultFooter";
+import {
+  DefaultSelect,
+  SearchSelect,
+  SearchSelectContent,
+  SearchSelectEmpty,
+  SearchSelectGroup,
+  SearchSelectInput,
+  SearchSelectItem,
+  SearchSelectList,
+  SearchSelectTrigger,
+  SearchSelectTriggerIcon,
+  SearchSelectValue,
+} from "@/components/Wrapper/FormItem";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { useReviewTemplateOptions } from "../../review-template";
 import { useRevieweeAndReviewerOptions } from "../use-case";
-import { DefaultFooter } from "@/components/Wrapper/DefaultFooter";
-import { zodResolver } from "@hookform/resolvers/zod";
 import add_performance_review_schema from "./add-performance-review-schema";
 
 interface AddPerformanceFormProps {
@@ -22,6 +34,10 @@ interface AddPerformanceFormProps {
 export function AddPerformanceForm({ onSubmit }: AddPerformanceFormProps) {
   const form = useForm({
     resolver: zodResolver(add_performance_review_schema),
+    defaultValues: {
+      reviewer: [],
+      reviewee: "",
+    },
   });
 
   const selected_reviewee = form.watch("reviewee");
@@ -85,12 +101,17 @@ export function AddPerformanceForm({ onSubmit }: AddPerformanceFormProps) {
             <FormItem>
               <FormLabel>Reviewee</FormLabel>
               <FormControl>
-                <SearchSelect
+                <DefaultSelect
+                  field={field}
+                  options={revieweeOptions}
+                  placeholder="Select Reviewee"
+                />
+                {/* <SearchSelect
                   field={field}
                   options={revieweeOptions}
                   placeholder="Select Reviewee"
                   isLoading={isLoading}
-                />
+                /> */}
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -103,12 +124,40 @@ export function AddPerformanceForm({ onSubmit }: AddPerformanceFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Reviewer</FormLabel>
-              <SearchSelect
+              <>
+                <SearchSelect
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SearchSelectTrigger>
+                    <FormControl>
+                      <SearchSelectValue placeholder="Select Reviewee" />
+                    </FormControl>
+                  </SearchSelectTrigger>
+                  <SearchSelectContent>
+                    <SearchSelectInput />
+                    <SearchSelectEmpty>No user found</SearchSelectEmpty>
+                    <SearchSelectList>
+                      <SearchSelectGroup>
+                        {reviewerOptions.map((item) => (
+                          <SearchSelectItem
+                            key={item.value}
+                            value={item.value.toString()}
+                          >
+                            {item.label}
+                          </SearchSelectItem>
+                        ))}
+                      </SearchSelectGroup>
+                    </SearchSelectList>
+                  </SearchSelectContent>
+                </SearchSelect>
+              </>
+              {/* <SearchSelect
                 field={field}
                 options={reviewerOptions}
                 placeholder="Select Reviewee"
                 isLoading={isLoading}
-              />
+              /> */}
               <FormMessage />
             </FormItem>
           )}
@@ -120,11 +169,11 @@ export function AddPerformanceForm({ onSubmit }: AddPerformanceFormProps) {
             <FormItem>
               <FormLabel>Review Template</FormLabel>
               <FormControl>
-                <SearchSelect
+                <DefaultSelect
                   field={field}
                   options={reviewTemplateOptions}
                   placeholder="Select Review Template"
-                  isLoading={isLoadingReviewTemplate}
+                  // isLoading={isLoadingReviewTemplate}
                 />
               </FormControl>
               <FormMessage />
@@ -136,3 +185,17 @@ export function AddPerformanceForm({ onSubmit }: AddPerformanceFormProps) {
     </Form>
   );
 }
+
+/**
+ * <SearchSelect value={value} onValueChange={onValueChange} options={options}>
+ *    <SearchSelectTrigger>
+ *      <SearchSelectValue placeholder="Select Reviewee" />
+ *    </SearchSelectTrigger>
+ *    <SearchSelectContent>
+ *    <SearchSelectItem value="1">John Doe</SearchSelectItem>
+ *    <SearchSelectItem value="1">John Doe</SearchSelectItem>
+ *    <SearchSelectItem value="1">John Doe</SearchSelectItem>
+ *    <SearchSelectItem value="1">John Doe</SearchSelectItem>
+ *    </SearchSelectContent>
+ * </SearchSelect>
+ */
