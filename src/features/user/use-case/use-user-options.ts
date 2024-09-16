@@ -5,7 +5,7 @@ export function useUserOptions() {
   const userOptions =
     users?.map((user) => ({
       label: user.name,
-      value: user.id,
+      value: user.id.toString(),
     })) ?? [];
   return { ...rest, userOptions };
 }

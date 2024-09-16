@@ -42,6 +42,7 @@ export default function SideNav() {
     [pathname]
   );
   function handleNavigationChange(value: string) {
+    if (!value?.trim?.()) return;
     navigate(value);
   }
   return (

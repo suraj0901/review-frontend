@@ -9,35 +9,39 @@ import {
 } from "@/components/ui/form";
 import { DefaultFooter } from "@/components/Wrapper/DefaultFooter";
 import {
-  DefaultSelect,
   SearchSelect,
+  SearchSelectClearAll,
   SearchSelectContent,
   SearchSelectEmpty,
-  SearchSelectGroup,
+  SearchSelectFooter,
   SearchSelectInput,
-  SearchSelectItem,
-  SearchSelectList,
+  SearchSelectOptions,
+  SearchSelectSelectAll,
   SearchSelectTrigger,
-  SearchSelectTriggerIcon,
   SearchSelectValue,
-} from "@/components/Wrapper/FormItem";
+} from "@/components/Wrapper/SearchSelect";
+
+import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { useReviewTemplateOptions } from "../../review-template";
 import { useRevieweeAndReviewerOptions } from "../use-case";
-import add_performance_review_schema from "./add-performance-review-schema";
+import add_performance_review_schema, {
+  PerformanceReviewSchema,
+} from "./performance-review-schema";
 
 interface AddPerformanceFormProps {
-  onSubmit: (data: FieldValues) => void;
+  onSubmit: (data: FieldValues) => Promise<void>;
+  defaultValues?: PerformanceReviewSchema;
 }
 
-export function AddPerformanceForm({ onSubmit }: AddPerformanceFormProps) {
+export function PerformanceReviewForm({
+  defaultValues,
+  onSubmit,
+}: AddPerformanceFormProps) {
   const form = useForm({
+    defaultValues,
     resolver: zodResolver(add_performance_review_schema),
-    defaultValues: {
-      reviewer: [],
-      reviewee: "",
-    },
   });
 
   const selected_reviewee = form.watch("reviewee");
@@ -47,10 +51,21 @@ export function AddPerformanceForm({ onSubmit }: AddPerformanceFormProps) {
     useRevieweeAndReviewerOptions(selected_reviewee, selected_reviewer);
   const { isLoading: isLoadingReviewTemplate, reviewTemplateOptions } =
     useReviewTemplateOptions();
+
+  async function handleSubmit(data: FieldValues) {
+    return onSubmit({
+      start_date: data.start_date,
+      end_date: data.end_date,
+      revieweeId: Number(data.reviewee),
+      reviewerIds: data.reviewer.map(Number),
+      reviewTemplateId: Number(data.review_template_id),
+    });
+  }
+
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         onReset={() => form.reset()}
         className="space-y-4 p-1"
       >
@@ -101,17 +116,23 @@ export function AddPerformanceForm({ onSubmit }: AddPerformanceFormProps) {
             <FormItem>
               <FormLabel>Reviewee</FormLabel>
               <FormControl>
-                <DefaultSelect
-                  field={field}
+                <SearchSelect
+                  value={field.value}
+                  onValueChange={field.onChange}
                   options={revieweeOptions}
-                  placeholder="Select Reviewee"
-                />
-                {/* <SearchSelect
-                  field={field}
-                  options={revieweeOptions}
-                  placeholder="Select Reviewee"
                   isLoading={isLoading}
-                /> */}
+                >
+                  <SearchSelectTrigger>
+                    <FormControl>
+                      <SearchSelectValue placeholder="Select Reviewee" />
+                    </FormControl>
+                  </SearchSelectTrigger>
+                  <SearchSelectContent>
+                    <SearchSelectInput />
+                    <SearchSelectEmpty>No user found</SearchSelectEmpty>
+                    <SearchSelectOptions />
+                  </SearchSelectContent>
+                </SearchSelect>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -124,40 +145,29 @@ export function AddPerformanceForm({ onSubmit }: AddPerformanceFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Reviewer</FormLabel>
-              <>
-                <SearchSelect
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
-                  <SearchSelectTrigger>
-                    <FormControl>
-                      <SearchSelectValue placeholder="Select Reviewee" />
-                    </FormControl>
-                  </SearchSelectTrigger>
-                  <SearchSelectContent>
-                    <SearchSelectInput />
-                    <SearchSelectEmpty>No user found</SearchSelectEmpty>
-                    <SearchSelectList>
-                      <SearchSelectGroup>
-                        {reviewerOptions.map((item) => (
-                          <SearchSelectItem
-                            key={item.value}
-                            value={item.value.toString()}
-                          >
-                            {item.label}
-                          </SearchSelectItem>
-                        ))}
-                      </SearchSelectGroup>
-                    </SearchSelectList>
-                  </SearchSelectContent>
-                </SearchSelect>
-              </>
-              {/* <SearchSelect
-                field={field}
+              <SearchSelect
+                value={field.value}
+                onValueChange={field.onChange}
+                defaultValue={[]}
                 options={reviewerOptions}
-                placeholder="Select Reviewee"
                 isLoading={isLoading}
-              /> */}
+              >
+                <SearchSelectTrigger>
+                  <FormControl>
+                    <SearchSelectValue placeholder="Select Reviewer" />
+                  </FormControl>
+                </SearchSelectTrigger>
+                <SearchSelectContent>
+                  <SearchSelectInput />
+                  <SearchSelectEmpty>No user found</SearchSelectEmpty>
+                  <SearchSelectOptions />
+                  <SearchSelectFooter>
+                    <SearchSelectSelectAll />
+                    <Separator orientation="vertical" className="h-5" />
+                    <SearchSelectClearAll />
+                  </SearchSelectFooter>
+                </SearchSelectContent>
+              </SearchSelect>
               <FormMessage />
             </FormItem>
           )}
@@ -168,14 +178,23 @@ export function AddPerformanceForm({ onSubmit }: AddPerformanceFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Review Template</FormLabel>
-              <FormControl>
-                <DefaultSelect
-                  field={field}
-                  options={reviewTemplateOptions}
-                  placeholder="Select Review Template"
-                  // isLoading={isLoadingReviewTemplate}
-                />
-              </FormControl>
+              <SearchSelect
+                value={field.value}
+                onValueChange={field.onChange}
+                options={reviewTemplateOptions}
+                isLoading={isLoadingReviewTemplate}
+              >
+                <SearchSelectTrigger>
+                  <FormControl>
+                    <SearchSelectValue placeholder="Select Reviewee Template" />
+                  </FormControl>
+                </SearchSelectTrigger>
+                <SearchSelectContent>
+                  <SearchSelectInput />
+                  <SearchSelectEmpty>No user found</SearchSelectEmpty>
+                  <SearchSelectOptions />
+                </SearchSelectContent>
+              </SearchSelect>
               <FormMessage />
             </FormItem>
           )}
@@ -185,17 +204,3 @@ export function AddPerformanceForm({ onSubmit }: AddPerformanceFormProps) {
     </Form>
   );
 }
-
-/**
- * <SearchSelect value={value} onValueChange={onValueChange} options={options}>
- *    <SearchSelectTrigger>
- *      <SearchSelectValue placeholder="Select Reviewee" />
- *    </SearchSelectTrigger>
- *    <SearchSelectContent>
- *    <SearchSelectItem value="1">John Doe</SearchSelectItem>
- *    <SearchSelectItem value="1">John Doe</SearchSelectItem>
- *    <SearchSelectItem value="1">John Doe</SearchSelectItem>
- *    <SearchSelectItem value="1">John Doe</SearchSelectItem>
- *    </SearchSelectContent>
- * </SearchSelect>
- */

@@ -8,7 +8,8 @@ export function useReviewTemplateOptions() {
   const reviewTemplateOptions =
     review_template?.map((review_template) => ({
       label: review_template.title,
-      value: review_template.id,
+      value: review_template.id.toString(),
+      // name: review_template.title,
     })) ?? [];
 
   return { ...rest, reviewTemplateOptions };

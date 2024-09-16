@@ -26,7 +26,9 @@ export default function LoadingAndErrorWrapper({
   if (isLoading)
     return (
       <div className="grid place-items-center">
-        <Loader2 className="animate-spin " size={30} />
+        <div className="flex items-center gap-1">
+          <Loader2 className="animate-spin w-5 h-5" size={30} /> Loading...
+        </div>
       </div>
     );
 

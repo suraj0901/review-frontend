@@ -21,3 +21,10 @@ export function file_to_base64_string(file: File | Blob) {
     reader.readAsDataURL(file);
   });
 }
+
+export function addSrNo<T>(list: T[], page = 1, limit = 10) {
+  return list.map((item, index) => ({
+    ...item,
+    sr_no: (page - 1) * limit + index + 1,
+  }));
+}

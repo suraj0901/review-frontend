@@ -1,15 +1,16 @@
-import { usePostMutation } from "@/components/use-cases";
+import { usePutMutation } from "@/components/use-cases";
 import { REVIEW } from "@/config/api";
 import { AxiosResponse } from "axios";
 import { useSWRConfig } from "swr";
 import { SWRMutationConfiguration } from "swr/mutation";
 
-export function useAddReview(
+export function useUpdateReview(
+  review_id: number,
   config?: SWRMutationConfiguration<AxiosResponse, AxiosResponse>
 ) {
   const { mutate } = useSWRConfig();
-  return usePostMutation({
-    key: REVIEW,
+  return usePutMutation({
+    key: review_id ? REVIEW + `/${review_id}` : null,
     name: "Review",
     config: {
       ...config,

@@ -1,11 +1,12 @@
-import { CheckCircle2, XCircleIcon } from "lucide-react";
-import { Button } from "../ui/button";
-import { useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
+import { CheckCircle2, XCircleIcon } from "lucide-react";
+import { useFormContext } from "react-hook-form";
+import { Button } from "../ui/button";
 
 export function DefaultFooter({ className }: { className?: string }) {
   const { formState } = useFormContext();
   const isMutating = formState.isSubmitting;
+
   return (
     <div className={cn("grid grid-cols-2 gap-2 mt-4", className)}>
       <Button disabled={isMutating} variant="secondary" type="reset">

@@ -10,12 +10,12 @@ import { toast } from "sonner";
 import useSWR from "swr";
 import useSWRMutation, { SWRMutationConfiguration } from "swr/mutation";
 
-export async function pushToast(
+export function pushToast(
   callback: Promise<AxiosResponse>,
   loading?: string,
   success?: string
 ) {
-  toast.promise(callback, {
+  return toast.promise(callback, {
     loading,
     success: (response) => success ?? response.data.message,
     error: (error) =>
@@ -51,33 +51,27 @@ export function useDefaultList(key: string, filter?: Record<string, string>) {
 export function usePostMutation({ key, name, config }: MutationProps) {
   const { trigger, ...rest } = useSWRMutation(key, post_default, config);
   async function submit(data: FieldValues) {
-    await pushToast(
-      trigger(data),
-      `Adding ${name}....`,
-      `Added ${name} successfully`
-    );
+    const promise = trigger(data);
+    pushToast(promise, `Adding ${name}....`, `Added ${name} successfully`);
+    return promise;
   }
   return { submit, ...rest };
 }
 export function usePutMutation({ key, name, config }: MutationProps) {
   const { trigger, ...rest } = useSWRMutation(key, put_default, config);
-  function submit(data: FieldValues) {
-    pushToast(
-      trigger(data),
-      `Upating ${name}....`,
-      `Updated ${name} successfully`
-    );
+  async function submit(data: FieldValues) {
+    const promise = trigger(data);
+    pushToast(promise, `Upating ${name}....`, `Updated ${name} successfully`);
+    return promise;
   }
   return { submit, ...rest };
 }
 export function useDeleteMutation({ key, config, name }: MutationProps) {
   const { trigger, ...rest } = useSWRMutation(key, delete_default, config);
-  function submit() {
-    return pushToast(
-      trigger(),
-      `Deleting ${name}....`,
-      `Deleted ${name} successfully`
-    );
+  async function submit() {
+    const promise = trigger();
+    pushToast(promise, `Deleting ${name}....`, `Deleted ${name} successfully`);
+    return promise;
   }
   return { submit, ...rest };
 }

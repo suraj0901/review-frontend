@@ -8,7 +8,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
-  AddPerformanceForm,
+  PerformanceReviewForm,
   useAddReview,
 } from "@/features/performance-review";
 import { Plus } from "lucide-react";
@@ -16,7 +16,12 @@ import { useState } from "react";
 
 export default function AddPerformance() {
   const [open, setOpen] = useState(false);
-  const { submit } = useAddReview();
+
+  const { submit } = useAddReview({
+    onSuccess() {
+      setOpen(false);
+    },
+  });
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -29,7 +34,7 @@ export default function AddPerformance() {
           <SheetTitle>Add Performance</SheetTitle>
         </SheetHeader>
         <ScrollArea className="py-4 flex-1 pr-4 -mr-4">
-          <AddPerformanceForm onSubmit={submit} />
+          <PerformanceReviewForm onSubmit={submit} />
         </ScrollArea>
       </SheetContent>
     </Sheet>
