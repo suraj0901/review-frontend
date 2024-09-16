@@ -7,4 +7,5 @@ export interface UserDTO {
   gender: GenderEnum;
   profile_image?: string;
   role: string;
+  isEmailVerified: boolean;
 }

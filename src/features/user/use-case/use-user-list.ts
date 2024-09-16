@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import useSWR from "swr";
 import { UserDTO } from "../user-dto";
 
-export function useUserList(filters: Record<string, string> | undefined) {
+export function useUserList(filters?: Record<string, string> | undefined) {
   let searchQuery = "";
   if (filters) {
     const searchParam = new URLSearchParams(filters);

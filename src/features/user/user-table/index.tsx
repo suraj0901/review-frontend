@@ -3,11 +3,28 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Gender } from "../gender";
 import { useUserList } from "../use-case";
-import { Edit, Trash2 } from "lucide-react";
+import { CheckCircle, Edit, Trash2, XCircle } from "lucide-react";
 import { DeleteUserDialog } from "../delete-user-dialog";
 import { EditUser } from "./EditUser";
+import { ColumnDef } from "@tanstack/react-table";
+import { UserDTO } from "../user-dto";
 
-const columns = [
+const EMAIL_VERIFICATION_STATUS = {
+  true: (
+    <span className="text-green-100 bg-green-600/20 flex items-center gap-1 w-fit px-2 py-1 rounded font-semibold uppercase text-xs tracking-wider">
+      <CheckCircle className="w-4 h-4 mr-1" />
+      Verified
+    </span>
+  ),
+  false: (
+    <span className="text-red-100  bg-red-600/20 flex items-center gap-1 w-fit px-2 py-1 rounded font-semibold uppercase text-xs tracking-wider">
+      <XCircle className="w-4 h-4" />
+      Not Verified
+    </span>
+  ),
+};
+
+const columns: ColumnDef<UserDTO>[] = [
   {
     header: "Name",
     accessorKey: "name",
@@ -25,10 +42,7 @@ const columns = [
       );
     },
   },
-  {
-    header: "Email",
-    accessorKey: "email",
-  },
+
   {
     header: "Gender",
     accessorKey: "gender",
@@ -37,6 +51,19 @@ const columns = [
         row as { getValue: () => string }
       )?.getValue() as keyof typeof Gender;
       return <>{Gender[gender_value]}</>;
+    },
+  },
+  {
+    header: "Email",
+    accessorKey: "email",
+  },
+  {
+    header: "Verification Status",
+    accessorKey: "isEmailVerified",
+    cell(props) {
+      return EMAIL_VERIFICATION_STATUS[
+        props.row.original.isEmailVerified ? "true" : "false"
+      ];
     },
   },
   {

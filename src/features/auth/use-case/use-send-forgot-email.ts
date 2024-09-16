@@ -1,25 +1,21 @@
 import { pushToast } from "@/components/use-cases";
-import { post_default, RESET_PASSWORD } from "@/config/api";
+import { FORGOT_PASSWORD, post_default } from "@/config/api";
 import { AxiosResponse } from "axios";
 import { FieldValues } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
 import useSWRMutation, { SWRMutationConfiguration } from "swr/mutation";
 
-export function useResetPassword(
+export function useSendForgotEmail(
   config?: SWRMutationConfiguration<AxiosResponse, AxiosResponse>
 ) {
-  const [searchParams] = useSearchParams();
   const { trigger, ...rest } = useSWRMutation(
-    RESET_PASSWORD + `?${searchParams.toString()}`,
+    FORGOT_PASSWORD,
     post_default,
     config
   );
 
   async function submit(data: FieldValues) {
-    const promise = trigger({
-      password: data.password,
-    });
-    pushToast(promise, `Resetting password....`, `Password reset successfully`);
+    const promise = trigger(data);
+    pushToast(promise, `Sending email....`, `Email sent successfully`);
     await promise;
   }
   return { submit, ...rest };

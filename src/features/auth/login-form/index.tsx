@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import user_login_schema from "./login-schema";
 import { useLoginUser } from "../use-case";
+import { Link } from "react-router-dom";
 
 export function UserLoginForm() {
   const form = useForm({
@@ -53,6 +54,14 @@ export function UserLoginForm() {
             </FormItem>
           )}
         />
+        <section className="text-end w-full">
+          <Link
+            to="/forgot-password"
+            className="underline text-sm text-muted-foreground"
+          >
+            Forgot password?
+          </Link>
+        </section>
 
         <Button className="w-full" disabled={isMutating}>
           Login

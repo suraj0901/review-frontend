@@ -53,7 +53,7 @@ export function usePostMutation({ key, name, config }: MutationProps) {
   async function submit(data: FieldValues) {
     const promise = trigger(data);
     pushToast(promise, `Adding ${name}....`, `Added ${name} successfully`);
-    return promise;
+    await promise;
   }
   return { submit, ...rest };
 }
