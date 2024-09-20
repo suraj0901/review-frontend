@@ -1,3 +1,4 @@
+import { ROLE } from "@/config/constant/role";
 import { GenderEnum } from "./gender";
 
 export interface UserDTO {
@@ -6,6 +7,6 @@ export interface UserDTO {
   email: string;
   gender: GenderEnum;
   profile_image?: string;
-  role: string;
+  role: ROLE;
   isEmailVerified: boolean;
 }

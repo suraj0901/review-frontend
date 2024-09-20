@@ -1,45 +1,23 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { BarChart4Icon, LayoutTemplate, UserCircle2 } from "lucide-react";
 import { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const navigations = [
-  {
-    value: "employee",
-    label: (
-      <p className="flex items-center gap-x-2">
-        <UserCircle2 /> Employee
-      </p>
-    ),
-  },
-  {
-    value: "performance",
-    label: (
-      <p className="flex items-center gap-x-2">
-        <BarChart4Icon />
-        Performance
-      </p>
-    ),
-  },
-  {
-    value: "review-template",
-    label: (
-      <p className="flex items-center gap-x-2">
-        <LayoutTemplate />
-        Review Template
-      </p>
-    ),
-  },
-];
+export interface SideNavigation {
+  value: string;
+  label: React.ReactNode;
+}
 
-export default function SideNav() {
+interface SideNavProps {
+  navigations: SideNavigation[];
+}
+export default function SideNav({ navigations }: SideNavProps) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const current_nav = useMemo(
     () =>
       navigations.find((nav) => pathname.includes(nav.value)) ?? navigations[0],
-    [pathname]
+    [pathname, navigations]
   );
   function handleNavigationChange(value: string) {
     if (!value?.trim?.()) return;

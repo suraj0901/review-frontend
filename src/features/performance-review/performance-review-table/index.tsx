@@ -1,45 +1,24 @@
 import { DataTable } from "@/components/ui/data-table";
-import performance_review_columns from "./column";
-import { usePerformanceReviewList } from "../use-case";
-import LoadingAndErrorWrapper from "@/components/LoadingAndErrorWrapper";
-import { useQueryFilter } from "@/lib/useSearchFilter";
-import usePagination from "@/lib/usePagination";
+import { ColumnDef } from "@tanstack/react-table";
+import { PerformanceReviewListItem, usePerformanceFilter } from "../use-case";
 
-export function PerformanceReviewTable() {
-  const { filters, serializedFilters, updateFilters } = useQueryFilter(
-    {
-      page: "1",
-      limit: "10",
-    },
-    {
-      serialize(value) {
-        return value;
-      },
-      deserialize(value) {
-        return value;
-      },
-    }
-  );
-  const { isLoading, list, error, total } =
-    usePerformanceReviewList(serializedFilters);
+interface Props {
+  list: PerformanceReviewListItem[];
+  columns?: ColumnDef<PerformanceReviewListItem>[];
+  total: number;
+}
 
-  const { pagination, updatePagination } = usePagination(
-    filters,
-    updateFilters
-  );
+export function PerformanceReviewTable({ columns = [], list, total }: Props) {
+  const { pagination, updatePagination } = usePerformanceFilter();
 
   return (
-    <LoadingAndErrorWrapper isLoading={isLoading} error={error}>
-      <DataTable
-        columns={performance_review_columns}
-        data={list}
-        manualPagination={true}
-        state={{
-          pagination,
-        }}
-        rowCount={total}
-        onPaginationChange={updatePagination}
-      />
-    </LoadingAndErrorWrapper>
+    <DataTable
+      columns={columns}
+      data={list}
+      manualPagination={true}
+      state={{ pagination }}
+      rowCount={total}
+      onPaginationChange={updatePagination}
+    />
   );
 }

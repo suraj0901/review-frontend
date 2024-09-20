@@ -7,4 +7,6 @@ export const RESET_PASSWORD = "/auth/reset-password";
 export const GET_USERS = "/user";
 export const GET_PERFORMANCE_REVIEW = "/review";
 export const REVIEW = "/review";
+export const MY_REVIEW = "/review/my-reviews";
+export const TO_REVIEW = "/review/to-review";
 export const REVIEW_TEMPLATE = "/review_template";
