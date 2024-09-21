@@ -15,6 +15,22 @@ const column: ColumnDef<PerformanceReviewListItem>[] = [
     accessorKey: "sr_no",
   },
   {
+    header: "Reviewee",
+    accessorKey: "Reviewee",
+    cell: (props) => {
+      return (
+        <div className="flex items-center gap-x-1">
+          <img
+            src={props.row.original.Reviewee.profile_image}
+            alt="Profile Image"
+            className="rounded-full w-8 h-8"
+          />
+          <p className="capitalize">{props.row.original.Reviewee.name}</p>
+        </div>
+      );
+    },
+  },
+  {
     header: "Start Date",
     accessorKey: "start_date",
     cell: (props) => format(props.getValue() as string, "dd MMM yyyy"),

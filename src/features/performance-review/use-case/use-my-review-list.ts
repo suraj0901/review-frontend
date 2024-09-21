@@ -19,7 +19,7 @@ export function useToReviewPerformanceReviewList(
 ) {
   const { data, ...rest } = useDefaultList(TO_REVIEW, {
     ...filters,
-    populate: "ReviewTemplate",
+    populate: "ReviewTemplate,Reviewee",
   });
   const performance_review: PerformanceReviewListItem[] = data?.rows ?? [];
   const total = data?.count as number;

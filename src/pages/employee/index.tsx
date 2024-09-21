@@ -12,7 +12,7 @@ const navigations: SideNavigation[] = [
     label: (
       <p className="flex items-center gap-x-2">
         <BarChart4Icon />
-        My Review
+        My Reviews
       </p>
     ),
   },

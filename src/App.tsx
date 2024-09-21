@@ -19,6 +19,7 @@ import ForgotPassword from "./pages/forgot-password";
 import ResetPassword from "./pages/reset-password";
 import ToReview from "./pages/employee/ToReview";
 import MyReview from "./pages/employee/MyReview";
+import FeedbackForm from "./pages/employee/FeedbackForm";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +79,14 @@ const router = createBrowserRouter([
           {
             path: "/employee/my-review",
             element: <MyReview />,
+          },
+          {
+            path: "/employee/my-review/:id",
+            element: <FeedbackForm />,
+          },
+          {
+            path: "/employee/to-review/:id",
+            element: <FeedbackForm />,
           },
         ],
       },
