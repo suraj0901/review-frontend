@@ -1,4 +1,5 @@
 import LoadingAndErrorWrapper from "@/components/LoadingAndErrorWrapper";
+import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import {
   PerformanceReviewListItem,
@@ -8,6 +9,8 @@ import {
 } from "@/features/performance-review";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
+import { Eye } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const column: ColumnDef<PerformanceReviewListItem>[] = [
   {
@@ -43,6 +46,17 @@ const column: ColumnDef<PerformanceReviewListItem>[] = [
   {
     header: "Template",
     accessorKey: "ReviewTemplate.title",
+  },
+  {
+    header: "",
+    accessorKey: "id",
+    cell: (props) => (
+      <Link to={(props.getValue() as number).toString()}>
+        <Button size="sm">
+          <Eye className="mr-1 h-4 w-4" /> View
+        </Button>
+      </Link>
+    ),
   },
 ];
 

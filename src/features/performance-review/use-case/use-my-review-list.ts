@@ -1,10 +1,11 @@
-import { useDefaultList } from "@/components/use-cases";
-import { PerformanceReviewListItem } from "./use-performace-review-list";
+import { useDefaultList, usePostMutation } from "@/components/use-cases";
+import { ANSWER, MY_REVIEWS, TO_REVIEWS } from "@/config/api";
 import { addSrNo } from "@/lib/utils";
-import { MY_REVIEW, TO_REVIEW } from "@/config/api";
+import { ReviewDTO } from "../performance-review-dto";
+import { PerformanceReviewListItem } from "./use-performace-review-list";
 
 export function useMyPerformanceReviewList(filters: Record<string, unknown>) {
-  const { data, ...rest } = useDefaultList(MY_REVIEW, {
+  const { data, ...rest } = useDefaultList(MY_REVIEWS, {
     ...filters,
     populate: "ReviewTemplate",
   });
@@ -17,7 +18,7 @@ export function useMyPerformanceReviewList(filters: Record<string, unknown>) {
 export function useToReviewPerformanceReviewList(
   filters: Record<string, unknown>
 ) {
-  const { data, ...rest } = useDefaultList(TO_REVIEW, {
+  const { data, ...rest } = useDefaultList(TO_REVIEWS, {
     ...filters,
     populate: "ReviewTemplate,Reviewee",
   });
@@ -25,4 +26,16 @@ export function useToReviewPerformanceReviewList(
   const total = data?.count as number;
   const list = addSrNo(performance_review);
   return { list, total, ...rest };
+}
+
+export function useGetPerformanceReviewById(
+  type: string,
+  id: string | undefined
+) {
+  const { data, ...rest } = useDefaultList(id ? type + `/${id}` : null);
+  return { review: data as ReviewDTO, ...rest };
+}
+
+export function useAddAnswerMutation() {
+  return usePostMutation({ key: ANSWER, name: "Answer" });
 }

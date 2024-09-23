@@ -29,13 +29,16 @@ export interface MutationProps {
   config?: SWRMutationConfiguration<AxiosResponse, AxiosResponse>;
 }
 
-export function useDefaultList(key: string, filter?: Record<string, string>) {
+export function useDefaultList(
+  key: string | null,
+  filter?: Record<string, string>
+) {
   let query = "";
   if (filter) {
     const searchParam = new URLSearchParams(filter);
     query = `?${searchParam.toString()}`;
   }
-  const { data, ...rest } = useSWR(key + query, get_default, {
+  const { data, ...rest } = useSWR(key ? key + query : null, get_default, {
     onError(error) {
       const error_message =
         error?.response?.data?.message ?? error?.message ?? error.toString();

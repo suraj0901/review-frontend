@@ -20,6 +20,7 @@ import ResetPassword from "./pages/reset-password";
 import ToReview from "./pages/employee/ToReview";
 import MyReview from "./pages/employee/MyReview";
 import FeedbackForm from "./pages/employee/FeedbackForm";
+import { MY_REVIEW, TO_REVIEW } from "./config/api";
 
 const router = createBrowserRouter([
   {
@@ -82,11 +83,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/employee/my-review/:id",
-            element: <FeedbackForm />,
+            element: <FeedbackForm type={MY_REVIEW} />,
           },
           {
             path: "/employee/to-review/:id",
-            element: <FeedbackForm />,
+            element: <FeedbackForm type={TO_REVIEW} />,
           },
         ],
       },

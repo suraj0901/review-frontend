@@ -186,12 +186,14 @@ export function PerformanceReviewForm({
               >
                 <SearchSelectTrigger>
                   <FormControl>
-                    <SearchSelectValue placeholder="Select Reviewee Template" />
+                    <SearchSelectValue placeholder="Select Review Template" />
                   </FormControl>
                 </SearchSelectTrigger>
                 <SearchSelectContent>
                   <SearchSelectInput />
-                  <SearchSelectEmpty>No user found</SearchSelectEmpty>
+                  <SearchSelectEmpty>
+                    No Review Template found
+                  </SearchSelectEmpty>
                   <SearchSelectOptions />
                 </SearchSelectContent>
               </SearchSelect>

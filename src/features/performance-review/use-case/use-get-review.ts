@@ -1,17 +1,6 @@
 import { get_default, REVIEW } from "@/config/api";
 import useSWR from "swr";
-
-export interface Review {
-  id: number;
-  start_date: string;
-  end_date: string;
-  reviewTemplateId: number;
-  revieweeId: number;
-  Reviewers: {
-    id: number;
-    name: string;
-  }[];
-}
+import { Review } from "../performance-review-dto";
 
 export function useGetReviewById(review_id: number) {
   const searchParams = new URLSearchParams({ populate: "Reviewers,Reviewee" });
