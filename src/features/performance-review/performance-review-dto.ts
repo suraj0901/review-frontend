@@ -49,9 +49,9 @@ export interface ReviewTemplateDTO {
   updatedAt?: Date;
 }
 export interface Answers {
+  id: number;
   title: string;
-  QuestionId: number;
-  ReviewId: number;
+  Question: QuestionDTO;
 }
 export interface ReviewDTO extends Review {
   ReviewTemplate: ReviewTemplateDTO;

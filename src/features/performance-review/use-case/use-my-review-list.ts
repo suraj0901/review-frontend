@@ -1,8 +1,13 @@
-import { useDefaultList, usePostMutation } from "@/components/use-cases";
+import {
+  useDefaultList,
+  usePostMutation,
+  usePutMutation,
+} from "@/components/use-cases";
 import { ANSWER, MY_REVIEWS, TO_REVIEWS } from "@/config/api";
 import { addSrNo } from "@/lib/utils";
 import { ReviewDTO } from "../performance-review-dto";
 import { PerformanceReviewListItem } from "./use-performace-review-list";
+import { useMemo } from "react";
 
 export function useMyPerformanceReviewList(filters: Record<string, unknown>) {
   const { data, ...rest } = useDefaultList(MY_REVIEWS, {
@@ -33,9 +38,22 @@ export function useGetPerformanceReviewById(
   id: string | undefined
 ) {
   const { data, ...rest } = useDefaultList(id ? type + `/${id}` : null);
-  return { review: data as ReviewDTO, ...rest };
+
+  const review: ReviewDTO = data;
+  const answers = useMemo(() => {
+    if (!review) return [];
+    return review?.Answers?.length > 0
+      ? review.Answers
+      : review.ReviewTemplate.Questions!.map((item) => ({
+          Question: item,
+          title: "",
+          id: null,
+          Feedbacks: [],
+        }));
+  }, [review]);
+  return { review, answers, ...rest };
 }
 
 export function useAddAnswerMutation() {
-  return usePostMutation({ key: ANSWER, name: "Answer" });
+  return usePutMutation({ key: ANSWER, name: "Answer" });
 }

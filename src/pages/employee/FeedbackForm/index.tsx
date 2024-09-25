@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
+  Answers,
   QuestionDTO,
   useAddAnswerMutation,
   useGetPerformanceReviewById,
@@ -32,14 +33,12 @@ interface Props {
 export default function FeedbackForm({ type }: Props) {
   const { id } = useParams();
   const ref = useRef<HTMLButtonElement>(null);
-  const { review, error, isLoading } = useGetPerformanceReviewById(type, id);
+  const { review, answers, error, isLoading } = useGetPerformanceReviewById(
+    type,
+    id
+  );
   const { submit, isMutating } = useAddAnswerMutation();
-  const questions =
-    review?.ReviewTemplate?.Questions?.map((item) => ({
-      ...item,
-      answer: review?.Answers?.find((answer) => answer.QuestionId === item.id)
-        ?.title,
-    })) ?? [];
+  console.log({ answers });
 
   return (
     <LoadingAndErrorWrapper error={error} isLoading={isLoading}>
@@ -54,7 +53,7 @@ export default function FeedbackForm({ type }: Props) {
           <QuestionsList
             element={ref}
             onSubmit={submit}
-            defaultValues={{ questions, reviewId: review?.id }}
+            defaultValues={{ answers, reviewId: review?.id }}
           />
           <div className="shrink-0 max-w-sm w-full space-y-4">
             <RevieweeeInfo reviewee={review?.Reviewee} />
@@ -133,7 +132,14 @@ interface QuestionListProps {
   element: React.MutableRefObject<HTMLButtonElement | null>;
   defaultValues: {
     reviewId: number;
-    questions: (QuestionDTO & { answer?: string })[];
+    answers:
+      | Answers[]
+      | {
+          Question: QuestionDTO;
+          title: string;
+          id: null;
+          Feedbacks: never[];
+        }[];
   };
   onSubmit: (data: FieldValues) => void;
 }
@@ -146,18 +152,20 @@ function QuestionsList({
     defaultValues,
   });
   const { fields } = useFieldArray({
-    name: "questions",
+    name: "answers",
     control: form.control,
   });
 
   function handleSubmit(data: FieldValues) {
     const answers = (
-      data.questions as QuestionListProps["defaultValues"]["questions"]
+      data.answers as QuestionListProps["defaultValues"]["answers"]
     ).map((item) => ({
-      title: item.answer,
-      QuestionId: item.id,
+      id: item.id,
+      title: item.title,
+      QuestionId: item.Question.id,
     }));
-    onSubmit({ ReviewId: defaultValues.reviewId, answers });
+
+    onSubmit({ reviewId: data.reviewId, answers });
   }
 
   return (
@@ -165,10 +173,10 @@ function QuestionsList({
       <form className="space-y-4 flex-1">
         {fields?.map((question, index) => (
           <Card key={question.id}>
-            <CardHeader>{question.title}</CardHeader>
+            <CardHeader>{question.Question.title}</CardHeader>
             <CardContent>
               <FormField
-                name={`questions.${index}.answer`}
+                name={`answers.${index}.title`}
                 control={form.control}
                 render={({ field }) => (
                   <Textarea placeholder="Write answer..." {...field} />
