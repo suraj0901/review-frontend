@@ -1,30 +1,20 @@
 import LoadingAndErrorWrapper from "@/components/LoadingAndErrorWrapper";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { FormField } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
-  Answers,
-  QuestionDTO,
+  QuestionsList,
   useAddAnswerMutation,
   useGetPerformanceReviewById,
   User,
 } from "@/features/performance-review";
 import { CheckCircle, ChevronLeft } from "lucide-react";
-import { title } from "process";
 import { useRef } from "react";
-import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
 interface Props {
@@ -38,7 +28,6 @@ export default function FeedbackForm({ type }: Props) {
     id
   );
   const { submit, isMutating } = useAddAnswerMutation();
-  console.log({ answers });
 
   return (
     <LoadingAndErrorWrapper error={error} isLoading={isLoading}>
@@ -125,75 +114,5 @@ function ReviewersInfo({ reviewers }: { reviewers?: User[] }) {
         ))}
       </CardContent>
     </Card>
-  );
-}
-
-interface QuestionListProps {
-  element: React.MutableRefObject<HTMLButtonElement | null>;
-  defaultValues: {
-    reviewId: number;
-    answers:
-      | Answers[]
-      | {
-          Question: QuestionDTO;
-          title: string;
-          id: null;
-          Feedbacks: never[];
-        }[];
-  };
-  onSubmit: (data: FieldValues) => void;
-}
-function QuestionsList({
-  defaultValues,
-  element,
-  onSubmit,
-}: QuestionListProps) {
-  const form = useForm({
-    defaultValues,
-  });
-  const { fields } = useFieldArray({
-    name: "answers",
-    control: form.control,
-  });
-
-  function handleSubmit(data: FieldValues) {
-    const answers = (
-      data.answers as QuestionListProps["defaultValues"]["answers"]
-    ).map((item) => ({
-      id: item.id,
-      title: item.title,
-      QuestionId: item.Question.id,
-    }));
-
-    onSubmit({ reviewId: data.reviewId, answers });
-  }
-
-  return (
-    <>
-      <form className="space-y-4 flex-1">
-        {fields?.map((question, index) => (
-          <Card key={question.id}>
-            <CardHeader>{question.Question.title}</CardHeader>
-            <CardContent>
-              <FormField
-                name={`answers.${index}.title`}
-                control={form.control}
-                render={({ field }) => (
-                  <Textarea placeholder="Write answer..." {...field} />
-                )}
-              />
-            </CardContent>
-            <CardFooter>
-              <h3>Feedback</h3>
-            </CardFooter>
-          </Card>
-        ))}
-        <button
-          ref={element}
-          onClick={form.handleSubmit(handleSubmit)}
-          className="sr-only"
-        ></button>
-      </form>
-    </>
   );
 }
