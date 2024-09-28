@@ -9,18 +9,18 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { ThemeProvider } from "./components/theme-provider";
 import { TooltipProvider } from "./components/ui/tooltip";
 import Employee from "./pages/admin/employee";
-import EmployeeLayout from "./pages/employee";
 import AdminLayout from "./pages/admin/layout";
 import Performance from "./pages/admin/performance";
+import ReviewTemplate from "./pages/admin/review-template";
+import EmployeeLayout from "./pages/employee";
+import Answers from "./pages/employee/Answers";
+import AnswersForm from "./pages/employee/AnswersForm";
+import MyReview from "./pages/employee/MyReview";
+import ToReview from "./pages/employee/ToReview";
+import ForgotPassword from "./pages/forgot-password";
 import Login from "./pages/login";
 import Register from "./pages/register";
-import ReviewTemplate from "./pages/admin/review-template";
-import ForgotPassword from "./pages/forgot-password";
 import ResetPassword from "./pages/reset-password";
-import ToReview from "./pages/employee/ToReview";
-import MyReview from "./pages/employee/MyReview";
-import FeedbackForm from "./pages/employee/FeedbackForm";
-import { MY_REVIEW, TO_REVIEW } from "./config/api";
 
 const router = createBrowserRouter([
   {
@@ -83,11 +83,11 @@ const router = createBrowserRouter([
           },
           {
             path: "/employee/my-review/:id",
-            element: <FeedbackForm type={MY_REVIEW} />,
+            element: <AnswersForm />,
           },
           {
             path: "/employee/to-review/:id",
-            element: <FeedbackForm type={TO_REVIEW} />,
+            element: <Answers />,
           },
         ],
       },

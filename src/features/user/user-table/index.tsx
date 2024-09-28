@@ -91,6 +91,7 @@ const columns: ColumnDef<UserDTO>[] = [
 
 export function UserTable() {
   const { users, error, isLoading } = useUserList();
+  console.log({ users });
 
   return (
     <LoadingAndErrorWrapper error={error} isLoading={isLoading}>

@@ -2,7 +2,9 @@ import { ROLE } from "@/config/constant/role";
 import { GenderEnum } from "../user/gender";
 
 export interface Feedback {
-  title: "";
+  title: string;
+  id: number;
+  User: User;
 }
 
 export interface Question {
@@ -12,7 +14,7 @@ export interface Question {
 }
 export interface QuestionDTO extends Question {
   ReviewTemplateId: number | null;
-  Feedback?: Feedback[];
+  Feedback: Feedback[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -52,6 +54,7 @@ export interface Answers {
   id: number;
   title: string;
   Question: QuestionDTO;
+  Feedbacks: Feedback[];
 }
 export interface ReviewDTO extends Review {
   ReviewTemplate: ReviewTemplateDTO;

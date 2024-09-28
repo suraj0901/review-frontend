@@ -17,7 +17,7 @@ export function useUserList(filters?: Record<string, string> | undefined) {
     },
   });
 
-  const users = data?.data.rows as UserDTO[];
+  const users = (data?.data.rows as UserDTO[]) ?? [];
   const total = data?.data.total as number;
 
   return { users, total, ...rest };

@@ -13,3 +13,4 @@ export const TO_REVIEWS = "/review/to-reviews";
 export const TO_REVIEW = "/review/to-review";
 export const REVIEW_TEMPLATE = "/review_template";
 export const ANSWER = "/answer";
+export const FEEDBACK = "/feedback";

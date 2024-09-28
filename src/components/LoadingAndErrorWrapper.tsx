@@ -5,11 +5,13 @@ interface Props {
   error?: { message?: string };
   isLoading?: boolean;
   children: React.ReactNode;
+  loadingText?: string;
 }
 export default function LoadingAndErrorWrapper({
   children,
   error,
   isLoading,
+  loadingText = "Loading...",
 }: Props) {
   if (error) {
     return (
@@ -23,14 +25,16 @@ export default function LoadingAndErrorWrapper({
     );
   }
 
-  if (isLoading)
-    return (
-      <div className="grid place-items-center">
-        <div className="flex items-center gap-1">
-          <Loader2 className="animate-spin w-5 h-5" size={30} /> Loading...
+  return (
+    <div className="relative">
+      {children}
+      {isLoading && (
+        <div className="absolute inset-0 bg-transparent/70 grid place-items-center">
+          <div className="flex items-center gap-1">
+            <Loader2 className="animate-spin w-5 h-5" size={30} /> {loadingText}
+          </div>
         </div>
-      </div>
-    );
-
-  return children;
+      )}
+    </div>
+  );
 }

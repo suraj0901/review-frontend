@@ -21,7 +21,7 @@ export function useReviewTemplateList(filter: Filter) {
     }
   );
 
-  const review_template = data?.data.rows as ReviewTemplate[];
+  const review_template = (data?.data.rows ?? []) as ReviewTemplate[];
   const total = data?.data.count as number;
 
   return { review_template, total, ...rest };

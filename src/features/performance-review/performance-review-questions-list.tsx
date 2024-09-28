@@ -4,11 +4,17 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { FormField } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Answers, QuestionDTO } from "@/features/performance-review";
 import { FieldValues, useFieldArray, useForm } from "react-hook-form";
-import Feedbacks from "./feedbacks";
+import { FeedbackList } from "./feedback/feedback-list";
 
 interface QuestionListProps {
   element: React.MutableRefObject<HTMLButtonElement | null>;
@@ -51,30 +57,40 @@ export function QuestionsList({
 
   return (
     <>
-      <form className="space-y-4 flex-1">
-        {fields?.map((question, index) => (
-          <Card key={question.id}>
-            <CardHeader>{question.Question.title}</CardHeader>
-            <CardContent>
-              <FormField
-                name={`answers.${index}.title`}
-                control={form.control}
-                render={({ field }) => (
-                  <Textarea placeholder="Write answer..." {...field} />
-                )}
-              />
-            </CardContent>
-            <CardFooter>
-              <Feedbacks />
-            </CardFooter>
-          </Card>
-        ))}
-        <button
-          ref={element}
-          onClick={form.handleSubmit(handleSubmit)}
-          className="sr-only"
-        ></button>
-      </form>
+      <Form {...form}>
+        <form className="space-y-4 flex-1">
+          {fields?.map((answer, index) => (
+            <Card key={answer.id}>
+              <CardHeader>{answer.Question.title}</CardHeader>
+              <CardContent>
+                <FormField
+                  name={`answers.${index}.title`}
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Textarea placeholder="Write answer..." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+              <CardFooter>
+                <FeedbackList
+                  answerId={answer.id}
+                  feedbacks={answer.Feedbacks}
+                />
+              </CardFooter>
+            </Card>
+          ))}
+          <button
+            ref={element}
+            onClick={form.handleSubmit(handleSubmit)}
+            className="sr-only"
+          ></button>
+        </form>
+      </Form>
     </>
   );
 }
