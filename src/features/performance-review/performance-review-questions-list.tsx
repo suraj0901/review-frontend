@@ -12,9 +12,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { Answers, QuestionDTO } from "@/features/performance-review";
+import { Answers, Feedback, QuestionDTO } from "@/features/performance-review";
 import { FieldValues, useFieldArray, useForm } from "react-hook-form";
-import { FeedbackList } from "./feedback/feedback-list";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 interface QuestionListProps {
   element: React.MutableRefObject<HTMLButtonElement | null>;
@@ -77,10 +77,10 @@ export function QuestionsList({
                 />
               </CardContent>
               <CardFooter>
-                <FeedbackList
-                  answerId={answer.id}
-                  feedbacks={answer.Feedbacks}
-                />
+                <div className="space-y-2">
+                  <h3>Feedbacks</h3>
+                  <FeedbacksList feedbacks={answer.Feedbacks} />
+                </div>
               </CardFooter>
             </Card>
           ))}
@@ -93,4 +93,27 @@ export function QuestionsList({
       </Form>
     </>
   );
+}
+
+function FeedbacksList({ feedbacks }: { feedbacks: Feedback[] }) {
+  if (feedbacks.length === 0)
+    return <i className="text-sm opacity-60">No feedbacks</i>;
+  return feedbacks.map((feedback) => (
+    <Card key={feedback.id}>
+      <CardHeader>
+        <div className="flex items-center gap-2">
+          <Avatar className="w-6 h-6">
+            <AvatarImage
+              src={
+                feedback.User?.profile_image ??
+                `https://avatar.iran.liara.run/username?username=${feedback.User?.name}`
+              }
+            />
+          </Avatar>
+          <span className="text-sm">{feedback.User?.name}</span>
+        </div>
+      </CardHeader>
+      <CardContent>{feedback.title}</CardContent>
+    </Card>
+  ));
 }

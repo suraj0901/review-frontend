@@ -1,8 +1,8 @@
 import { ROLE } from "../constant/role";
 
 const AUTHENTICATED_ROUTE_MAP = {
-  [ROLE.ADMIN]: "/admin",
-  [ROLE.USER]: "/employee",
+  [ROLE.ADMIN]: "/admin/employee",
+  [ROLE.USER]: "/employee/my-review",
 };
 
 export const AUTHENTICATED_ROUTE = (role: ROLE) =>

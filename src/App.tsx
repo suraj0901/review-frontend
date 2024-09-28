@@ -71,7 +71,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <MyReview />,
+            element: <Navigate to={"/employee/to-review"} />,
           },
           {
             path: "/employee/to-review",

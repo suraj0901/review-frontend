@@ -7,12 +7,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { AxiosResponse } from "axios";
 import { Edit2 } from "lucide-react";
 import { useState } from "react";
 import { EditUserForm } from "./edit-user-form";
+import { useUpdateProfile } from "./use-case";
 import { UserDTO } from "./user-dto";
-import { setLoggedInUser } from "./user-store";
 
 interface UserProfileProps {
   children: React.ReactNode;
@@ -21,10 +20,10 @@ interface UserProfileProps {
 
 export function UserProfile({ children, user }: UserProfileProps) {
   const [showEditForm, setShowEditForm] = useState(false);
-  async function handleUpdateSuccess(data?: AxiosResponse) {
-    setLoggedInUser(data?.data);
+  const { submit } = useUpdateProfile(() => {
     setShowEditForm(false);
-  }
+  });
+
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
@@ -37,7 +36,7 @@ export function UserProfile({ children, user }: UserProfileProps) {
         <div className="my-4 space-y-4">
           {user && !showEditForm ? <Profile user={user} /> : null}
           {user && showEditForm ? (
-            <EditUserForm user={user} onSuccess={handleUpdateSuccess} />
+            <EditUserForm user={user} onSubmit={submit} />
           ) : null}
         </div>
         <SheetFooter>

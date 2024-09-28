@@ -1,4 +1,5 @@
-import { GET_USERS, put_default } from "@/config/api";
+import { usePutMutation } from "@/components/use-cases";
+import { GET_USERS, PROFILE, put_default } from "@/config/api";
 import { AxiosResponse } from "axios";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
@@ -33,4 +34,12 @@ export function useEditUser(
   }
 
   return { updateUser, ...rest };
+}
+
+export function useUpdateProfile(onSuccess: () => void) {
+  return usePutMutation({
+    key: PROFILE,
+    name: "Profile",
+    config: { onSuccess },
+  });
 }

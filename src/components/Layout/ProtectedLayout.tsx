@@ -24,10 +24,13 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
           </h1>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="icon">
+              <Button size="icon" className="rounded-full">
                 <Avatar>
                   <AvatarImage
-                    src={`https://avatar.iran.liara.run/username?username=${user?.name}`}
+                    src={
+                      user?.profile_image ??
+                      `https://avatar.iran.liara.run/username?username=${user?.name}`
+                    }
                   />
                 </Avatar>
               </Button>

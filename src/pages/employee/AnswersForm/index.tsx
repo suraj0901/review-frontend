@@ -20,7 +20,6 @@ export default function AnswersForm() {
     MY_REVIEW,
     id
   );
-  console.log({ review });
 
   const { submit, isMutating } = useAddAnswerMutation();
 
@@ -34,11 +33,13 @@ export default function AnswersForm() {
           </Button>
         </div>
         <div className="flex items-start gap-4">
-          <QuestionsList
-            element={ref}
-            onSubmit={submit}
-            defaultValues={{ answers, reviewId: review?.id }}
-          />
+          {review && (
+            <QuestionsList
+              element={ref}
+              onSubmit={submit}
+              defaultValues={{ answers, reviewId: review?.id }}
+            />
+          )}
           <div className="shrink-0 max-w-sm w-full space-y-4">
             <RevieweeeInfo reviewee={review?.Reviewee} />
             <ReviewersInfo reviewers={review?.Reviewers} />

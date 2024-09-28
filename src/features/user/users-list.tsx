@@ -17,7 +17,10 @@ export function UserList({ onTap }: UserListProps) {
     >
       <Avatar>
         <AvatarImage
-          src={`https://avatar.iran.liara.run/username?username=${user.name}`}
+          src={
+            user.profile_image ??
+            `https://avatar.iran.liara.run/username?username=${user.name}`
+          }
           alt={user.name}
         />
         <AvatarFallback>CN</AvatarFallback>

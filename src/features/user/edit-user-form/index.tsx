@@ -16,30 +16,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { file_to_base64_string } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosResponse } from "axios";
 import { FieldValues, useForm } from "react-hook-form";
 import { Gender } from "../gender";
-import { useEditUser } from "../use-case";
 import { UserDTO } from "../user-dto";
 import edit_user_schema from "./edit-user-schema";
-import { file_to_base64_string } from "@/lib/utils";
 
 export function EditUserForm({
   user,
-  onSuccess,
+  onSubmit,
 }: {
   user: UserDTO;
-  onSuccess?: (value?: AxiosResponse) => void;
+  onSubmit: (data: FieldValues) => void;
 }) {
   const form = useForm({
     resolver: zodResolver(edit_user_schema),
     defaultValues: { ...user, profile_image: user.profile_image ?? "" },
   });
-  const { updateUser, isMutating } = useEditUser(user.id, { onSuccess });
-  function onSubmit(data: FieldValues) {
-    updateUser(data);
-  }
+
+  const isMutating = form.formState.isSubmitting;
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
