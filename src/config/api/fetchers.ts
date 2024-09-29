@@ -2,7 +2,9 @@ import axios from "axios";
 import { REFRESH_TOKEN } from "./endpoint";
 import { AUTH_KEY, BEARER } from "../constant/app.config";
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = import.meta.env.PROD
+  ? "https://review-backend-0vye.onrender.com"
+  : "http://localhost:3000";
 
 export const base_api = axios.create({
   baseURL: BASE_URL,
