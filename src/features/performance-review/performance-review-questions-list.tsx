@@ -77,7 +77,7 @@ export function QuestionsList({
                 />
               </CardContent>
               <CardFooter>
-                <div className="space-y-2">
+                <div className="space-y-2 w-full">
                   <h3>Feedbacks</h3>
                   <FeedbacksList feedbacks={answer.Feedbacks} />
                 </div>

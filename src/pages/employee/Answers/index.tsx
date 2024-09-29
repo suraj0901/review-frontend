@@ -32,7 +32,7 @@ export default function Answers() {
           <BackButton />
         </div>
         <div className="flex items-start gap-4">
-          <div className="space-y-4 flex-1">
+          <div className="space-y-4 flex-1 w-full">
             {answers?.map((answer) => (
               <AnswerCard key={answer.id} answer={answer} />
             ))}

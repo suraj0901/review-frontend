@@ -32,7 +32,7 @@ export default function AnswersForm() {
             <CheckCircle className="mr-1 w-4 h-4" /> Save
           </Button>
         </div>
-        <div className="flex items-start gap-4">
+        <div className="flex items-start gap-4 w-full">
           {review && (
             <QuestionsList
               element={ref}
