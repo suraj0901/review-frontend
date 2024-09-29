@@ -6,7 +6,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { ResetPasswordForm } from "./ResetPasswordForm";
 
 interface ResetPasswordProps {
   children: React.ReactNode;
@@ -21,7 +20,7 @@ export function ResetPassword({ children }: ResetPasswordProps) {
           <DialogTitle>Reset Password</DialogTitle>
         </DialogHeader>
         <div>
-          <ResetPasswordForm onSuccess={() => setOpen(false)} />
+          {/* <ResetPasswordForm onSuccess={() => setOpen(false)} /> */}
         </div>
       </DialogContent>
     </Dialog>

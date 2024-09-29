@@ -29,9 +29,10 @@ import { useRevieweeAndReviewerOptions } from "../use-case";
 import add_performance_review_schema, {
   PerformanceReviewSchema,
 } from "./performance-review-schema";
+import { AxiosResponse } from "axios";
 
 interface AddPerformanceFormProps {
-  onSubmit: (data: FieldValues) => Promise<void>;
+  onSubmit: (data: FieldValues) => Promise<AxiosResponse>;
   defaultValues?: PerformanceReviewSchema;
 }
 
